@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">DoodBlueTask</string>
+
+    <!-- Menu Strings-->
+    <string name="menu_info">Info</string>
+    <string name="menu_upload">Upload</string>
+
+    <string name="text_place_order">PLACE ORDER</string>
+    <string name="text_show_more"><u>Show more</u></string>
+    <string name="title_my_cart">My Cart</string>
+    <string name="label_review_orders">Review Orders</string>
+</resources>

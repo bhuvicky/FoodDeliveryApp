@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/foodMenuFragment">
+
+    <fragment
+        android:id="@+id/foodMenuFragment"
+        android:name="com.example.doodbluetask.foodmenu.FoodMenuFragment"
+        android:label="FoodMenuFragment" >
+        <action
+            android:id="@+id/action_foodMenuFragment_to_myCartFragment"
+            app:destination="@id/myCartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myCartFragment"
+        android:name="com.example.doodbluetask.mycart.MyCartFragment"
+        android:label="MyCartFragment" >
+        <argument
+            android:name="selectedFoodMenuList"
+            app:argType="com.example.doodbluetask.model.SelectedFoodMenuList" />
+    </fragment>
+</navigation>

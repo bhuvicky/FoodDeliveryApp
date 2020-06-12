@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="numberOfItemsInCart">
+        <item quantity="one">VIEW CART (%1$d ITEM)</item>
+        <item quantity="other">VIEW CART (%1$d ITEMS)</item>
+    </plurals>
+</resources>

@@ -1,0 +1,42 @@
+[
+  {
+    "menu_id" : 1,
+    "menu_name": "Vegetable Kofta",
+    "recipe": "cooked mix veg, formed into balls & deep fry",
+    "price": "$7",
+    "typeN": "N",
+    "typeD": "D"
+  },
+  {
+    "menu_id" : 2,
+    "menu_name": "Grilled Aubergine Salad",
+    "recipe": "2 graffiti aubergines olive oil garlic gloves",
+    "price": "$10",
+    "typeN": "N",
+    "typeD": ""
+  },
+  {
+    "menu_id" : 3,
+    "menu_name": "Panner Tikka",
+    "recipe": "panner spices chaat masala vinegar",
+    "price": "$7",
+    "typeN": "",
+    "typeD": "D"
+  },
+  {
+    "menu_id" : 4,
+    "menu_name": "Samosa",
+    "recipe": "potato peas spices and deep fried",
+    "price": "$9",
+    "typeN": "",
+    "typeD": "D"
+  },
+  {
+    "menu_id" : 5,
+    "menu_name": "Cheese Chicken Kebabs",
+    "recipe": "chicken pieces cheese yogurt chilles",
+    "price": "$7",
+    "typeN": "N",
+    "typeD": ""
+  }
+]

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardElevation="10dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/textviewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="24sp"
+            android:textColor="@color/colorDarkBlue"
+            tools:text="Inka Restaurant"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/textviewRatings"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:drawableStart="@drawable/ic_star_border_black_24dp"
+                android:textSize="16sp"
+                tools:text="5.0 (200+) | "/>
+
+            <TextView
+                android:id="@+id/textviewTiming"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                tools:text="All days: 09:00 AM - 06:00 PM "/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textviewContactNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_dialer_black_24dp"
+            android:drawablePadding="8dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            tools:text="Reach us at: 98545621242"/>
+
+        <Button
+            android:id="@+id/buttonBookTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_corner_blue"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@android:color/white"
+            android:text="BOOK A TABLE" />
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

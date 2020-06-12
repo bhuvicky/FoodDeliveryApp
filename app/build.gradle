@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    compileSdkVersion 29
+
+
+    defaultConfig {
+        applicationId "com.example.doodbluetask"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // we should write below block, for the error;
+    // kotlin cannot inline bytecode built with jvm target 1.8 into bytecode that is being built with jvm target 1.6, please specify proper 'jvm-target' option
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    
+    // Android
+    implementation deps.android.appcompat
+    implementation deps.android.recyclerview
+    implementation deps.android.cardview
+    implementation deps.android.material
+    implementation deps.android.multidex
+    implementation deps.android.constraintlayout
+
+    // Navigation
+    implementation deps.navigation.fragment
+    implementation deps.navigation.ui
+
+    implementation deps.paging.lib
+
+    implementation deps.parser.gson
+
+    //Reactive
+    implementation deps.reactive.rxjava
+    implementation deps.reactive.rxandroid
+
+    implementation 'androidx.core:core-ktx:1.3.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation project(':appbase')
+}

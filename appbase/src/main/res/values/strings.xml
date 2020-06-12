@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AppBase</string>
+    <string name="msg_no_internet">Please  check  your internet connection !!</string>
+</resources>
