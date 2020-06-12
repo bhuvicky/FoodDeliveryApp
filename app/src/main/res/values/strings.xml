@@ -13,4 +13,9 @@
 
     <string name="text_timing">All days: %s</string>
     <string name="text_contact_num">Reach us at: %s</string>
+
+    // IllegalFormatConversionException: d != java.lang.Float
+    // TODO: Error Faced; if we put wrong format specifier, we will get above error
+    // TODO: New Learn; \u20ac - Unicode for currency symbol "Euro"
+    <string name="text_price">\u20ac %.2f</string>
 </resources>

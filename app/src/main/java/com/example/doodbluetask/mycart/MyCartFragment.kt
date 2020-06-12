@@ -1,10 +1,15 @@
 package com.example.doodbluetask.mycart
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bhuvanesh.appbase.getViewModel
@@ -22,6 +27,8 @@ class MyCartFragment : Fragment() {
     private lateinit var mViewModel: FoodMenuViewModel
     private lateinit var foodMenuAdapter: FoodMenuListAdapter
     private var foodMenuList: List<FoodMenu> = mutableListOf()
+    var totalCost = 0f
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +66,8 @@ class MyCartFragment : Fragment() {
     }
 
     private fun initViews() {
+        updateTotalCost()
+
         with(recyclerviewCartList) {
             layoutManager = LinearLayoutManager(context)
             adapter = foodMenuAdapter
@@ -67,21 +76,56 @@ class MyCartFragment : Fragment() {
         if (foodMenuList.size <= AppConstants.INITIAL_DATA_TO_LOAD) {
             foodMenuAdapter.setData(foodMenuList)
         } else {
-            mViewModel.setCartList(foodMenuList)
-            val initialList = mViewModel.getInitialData()
+            updateCartList()
+        }
+        setListeners()
+    }
 
-            foodMenuAdapter.setWithFooter(true)
-            foodMenuAdapter.setData(initialList)
+    private fun setListeners() {
+        foodMenuAdapter.onItemCountChanged = { itemPrice ->
+            totalCost += itemPrice
+            createSpannableString()
+        }
+    }
 
-            foodMenuAdapter.onClickShowMore = {
-                foodMenuAdapter.setWithFooter(false)
-                foodMenuAdapter.notifyItemRemoved(initialList.size)
+    private fun updateCartList() {
+        mViewModel.setCartList(foodMenuList)
+        val initialList = mViewModel.getInitialData()
 
-                mViewModel.getRemainingData().forEach {
-                    (initialList as ArrayList<FoodMenu>).add(it)
-                    foodMenuAdapter.notifyItemInserted(initialList.size - 1)
-                }
+        foodMenuAdapter.setWithFooter(true)
+        foodMenuAdapter.setData(initialList)
+
+        foodMenuAdapter.onClickShowMore = {
+            foodMenuAdapter.setWithFooter(false)
+            foodMenuAdapter.notifyItemRemoved(initialList.size)
+
+            mViewModel.getRemainingData().forEach {
+                (initialList as ArrayList<FoodMenu>).add(it)
+                foodMenuAdapter.notifyItemInserted(initialList.size-1)
             }
         }
+    }
+
+    private fun updateTotalCost() {
+        foodMenuList.forEach { totalCost += it.itemCount * it.price }
+        createSpannableString()
+    }
+
+    private fun createSpannableString() {
+        val amount = resources.getString(R.string.text_price, totalCost)
+        val text = "Total Cost \n $amount"
+
+        val spannable = SpannableString(text)
+        spannable.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorLightOrange)),
+            0, 10,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        spannable.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorDarkBlue)),
+            13, text.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        buttonTotalCost.text = spannable
     }
 }

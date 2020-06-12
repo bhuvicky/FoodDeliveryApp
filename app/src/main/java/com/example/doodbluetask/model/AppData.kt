@@ -20,7 +20,7 @@ data class FoodMenu(
     val menuId: Long,
     @SerializedName("menu_name")
     val menuName: String,
-    val price: String,
+    val price: Float,
     val recipe: String,
     val typeD: String,
     val typeN: String,

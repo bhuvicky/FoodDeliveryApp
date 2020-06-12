@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bhuvanesh.appbase.gone
 import com.bhuvanesh.appbase.show
+import com.example.doodbluetask.AppConstants
 import com.example.doodbluetask.R
 import com.example.doodbluetask.model.FoodMenu
 import kotlinx.android.synthetic.main.item_food_menu.view.*
 import kotlinx.android.synthetic.main.layout_add_remove_item.view.*
 import java.lang.ref.WeakReference
+import java.util.*
 
 
 /*
@@ -34,6 +36,7 @@ class FoodMenuListAdapter(private val context: Context,
     private val TYPE_FOOTER = 2
     private val updatedCartItemMap by lazy { SparseIntArray() }
     var onClickShowMore: () -> Unit = {}
+    var onItemCountChanged: ((Float) -> Unit)? = {}
 
     private var mWithHeader = false
     private var mWithFooter = false
@@ -48,16 +51,19 @@ class FoodMenuListAdapter(private val context: Context,
     * viewType - what value getItemViewType method returns.
     * */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        println("log onCreateViewHolder")
         return if (viewType == TYPE_FOOTER) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_show_more, parent, false)
             ShowMoreViewHolder(view)
         } else {
+            println("log type item")
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_food_menu, parent, false)
             FoodMenuViewHolder(view,this)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        println("log onBindViewHolder")
         if (holder is FoodMenuViewHolder)
             holder.bind(foodMenuList, clickListener)
         else {
@@ -105,6 +111,7 @@ class FoodMenuListAdapter(private val context: Context,
         }
 
         fun bind(itemList: MutableList<FoodMenu>, clickListener: (Int) -> Unit) {
+            println("log food menu view holder")
             val item = itemList[adapterPosition]
             itemView.run {
 
@@ -148,7 +155,6 @@ class FoodMenuListAdapter(private val context: Context,
                     layoutAddRemoveItem.show()
                     updateItem(itemList, true)
                     clickListener(mAdapter?.totalItemCount ?: 0)
-
                 }
             }
         }
@@ -157,7 +163,8 @@ class FoodMenuListAdapter(private val context: Context,
             view.run {
                 textviewMenuTitle.text = item.menuName
                 textviewMenuSubTitle.text = item.recipe
-                textviewPrice.text = item.price
+                textviewPrice.text = mAdapter?.context?.resources?.getString(R.string.text_price, item.price) ?: ""
+
 
                 textviewFoodTypeN.text = item.typeN
                 textviewFoodTypeD.text = item.typeD
@@ -169,9 +176,11 @@ class FoodMenuListAdapter(private val context: Context,
             if (isIncrement) {
                 ++(item.itemCount)
                 mAdapter?.let { ++(it.totalItemCount) }
+                mAdapter?.onItemCountChanged?.invoke(item.price)
             } else {
                 --(item.itemCount)
                 mAdapter?.let { --(it.totalItemCount) }
+                mAdapter?.onItemCountChanged?.invoke(0 - item.price)
             }
             // For Cart
             val isMyCart = mAdapter?.isCart ?: false
