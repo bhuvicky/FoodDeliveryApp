@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,13 +24,13 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="@dimen/height_banner_image"
                     android:scaleType="centerCrop"
                     android:src="@drawable/food_banner_1" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="@dimen/height_toolbar_bg"
                     android:background="@drawable/bg_gradient_black" />
 
                 <androidx.appcompat.widget.Toolbar
@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layout_address"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/margin_8dp"
                     android:nestedScrollingEnabled="false"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
@@ -88,9 +88,9 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_centerHorizontal="true"
             android:drawableStart="@drawable/ic_shopping_cart"
-            android:drawablePadding="8dp"
+            android:drawablePadding="@dimen/margin_8dp"
             android:gravity="center_vertical"
-            android:text="VIEW CART"
+            tools:text="VIEW CART"
             android:textColor="@android:color/white" />
     </RelativeLayout>
 </RelativeLayout>

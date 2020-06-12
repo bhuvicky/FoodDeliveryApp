@@ -26,8 +26,8 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/margin_8dp"
+        android:layout_marginEnd="@dimen/margin_8dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_medium"
             tools:text="Guac de la Costa" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_small"
             tools:text="tortillas de mais, fruit de la passion, mango" />
 
         <TextView
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:textColor="@color/colorLightOrange"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_size_medium"
             tools:text="$7" />
     </LinearLayout>
 
@@ -71,10 +71,10 @@
             android:textColor="@android:color/black"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
+            android:paddingStart="@dimen/margin_16dp"
+            android:paddingEnd="@dimen/margin_16dp"
+            android:paddingTop="@dimen/margin_4dp"
+            android:paddingBottom="@dimen/margin_4dp"
             android:text="Add"/>
     </RelativeLayout>
 

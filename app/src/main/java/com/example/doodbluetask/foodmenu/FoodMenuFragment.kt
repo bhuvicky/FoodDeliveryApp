@@ -121,10 +121,7 @@ class FoodMenuFragment : Fragment() {
         val ratings = "${address.rating} ($reviews) | "
         textviewRatings.text = ratings
 
-        textviewTiming.text = "All Days: ${address.availableTime}"
-        textviewContactNumber.text = "Reach us at: ${address.contactNumber}"
+        textviewTiming.text = resources.getString(R.string.text_timing, address.availableTime)
+        textviewContactNumber.text = resources.getString(R.string.text_contact_num, address.contactNumber)
     }
-
-    onB
-
 }

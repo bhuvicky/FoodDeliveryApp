@@ -4,21 +4,21 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardElevation="10dp"
+    app:cardElevation="@dimen/card_elevation"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="16dp">
+        android:layout_margin="@dimen/margin_16dp">
 
         <TextView
             android:id="@+id/textviewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_size_xlarge"
             android:textColor="@color/colorDarkBlue"
             tools:text="Inka Restaurant"/>
 
@@ -27,21 +27,21 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="@dimen/margin_16dp">
 
             <TextView
                 android:id="@+id/textviewRatings"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:drawableStart="@drawable/ic_star_border_black_24dp"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_small"
                 tools:text="5.0 (200+) | "/>
 
             <TextView
                 android:id="@+id/textviewTiming"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_small"
                 tools:text="All days: 09:00 AM - 06:00 PM "/>
 
         </LinearLayout>
@@ -52,10 +52,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_dialer_black_24dp"
-            android:drawablePadding="8dp"
+            android:drawablePadding="@dimen/margin_8dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:textSize="@dimen/text_size_small"
             tools:text="Reach us at: 98545621242"/>
 
         <Button
@@ -64,11 +64,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_corner_blue"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:paddingStart="@dimen/margin_8dp"
+            android:paddingEnd="@dimen/margin_8dp"
             android:textColor="@android:color/white"
-            android:text="BOOK A TABLE" />
+            android:text="@string/text_book_table" />
     </LinearLayout>
 
 

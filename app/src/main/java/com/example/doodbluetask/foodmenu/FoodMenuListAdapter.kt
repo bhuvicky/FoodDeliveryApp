@@ -93,9 +93,9 @@ class FoodMenuListAdapter(private val context: Context,
         mWithFooter = value
     }
 
-    class ShowMoreViewHolder(val containerView: View?): RecyclerView.ViewHolder(containerView!!)
+    class ShowMoreViewHolder(containerView: View?): RecyclerView.ViewHolder(containerView!!)
 
-    class FoodMenuViewHolder(val containerView: View?, adapter: FoodMenuListAdapter): RecyclerView.ViewHolder(containerView!!) {
+    class FoodMenuViewHolder(containerView: View?, adapter: FoodMenuListAdapter): RecyclerView.ViewHolder(containerView!!) {
         private val mWeakAdapterInstance : WeakReference<FoodMenuListAdapter>
         private val mAdapter : FoodMenuListAdapter?
 
@@ -105,7 +105,7 @@ class FoodMenuListAdapter(private val context: Context,
         }
 
         fun bind(itemList: MutableList<FoodMenu>, clickListener: (Int) -> Unit) {
-            val item = itemList.get(adapterPosition)
+            val item = itemList[adapterPosition]
             itemView.run {
 
                 if (item.itemCount > 0) {
@@ -165,7 +165,7 @@ class FoodMenuListAdapter(private val context: Context,
         }
 
         private fun updateItem(itemList: MutableList<FoodMenu>, isIncrement: Boolean) {
-            val item = itemList.get(adapterPosition)
+            val item = itemList[adapterPosition]
             if (isIncrement) {
                 ++(item.itemCount)
                 mAdapter?.let { ++(it.totalItemCount) }
@@ -183,7 +183,7 @@ class FoodMenuListAdapter(private val context: Context,
                 itemList.removeAt(adapterPosition)
                 mAdapter?.notifyItemRemoved(adapterPosition)
             } else {
-                itemList.set(adapterPosition, item)
+                itemList[adapterPosition] = item
                 mAdapter?.notifyItemChanged(adapterPosition)
             }
         }
