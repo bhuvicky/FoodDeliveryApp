@@ -1,6 +1,7 @@
 package com.example.doodbluetask.foodmenu
 
 import android.app.Application
+import android.util.SparseIntArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,9 +22,9 @@ class FoodMenuViewModel(val application: Application): ViewModel() {
 
     private val repository: MCommerceRepository
 
-    private val tempList by lazy { ArrayList<FoodMenu>(AppConstants.INITIAL_DATA_TO_LOAD) }
-
     private lateinit var  originalList : List<FoodMenu>
+    private var updatedCartMap = SparseIntArray()
+    private var totalCartItemCount = 0
 
     init {
         repository = MCommerceRepository(application)
@@ -58,9 +59,21 @@ class FoodMenuViewModel(val application: Application): ViewModel() {
         originalList = list as ArrayList<FoodMenu>
     }
 
+    fun setUpdatedCartMap(map: SparseIntArray) {
+        this.updatedCartMap = map
+    }
+
+    fun setTotalCartItemCount(count: Int) {
+        this.totalCartItemCount = count
+    }
+
     fun getInitialData() =
         originalList.filterIndexed { index, foodMenu ->  index < AppConstants.INITIAL_DATA_TO_LOAD}
 
     fun getRemainingData() =
         originalList.filterIndexed { index, foodMenu ->  index > AppConstants.INITIAL_DATA_TO_LOAD - 1}
+
+    fun getUpdatedCartMap() = updatedCartMap
+
+    fun getTotalCartItemCount() = totalCartItemCount
 }

@@ -8,13 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bhuvanesh.appbase.gone
 import com.bhuvanesh.appbase.show
-import com.example.doodbluetask.AppConstants
 import com.example.doodbluetask.R
 import com.example.doodbluetask.model.FoodMenu
 import kotlinx.android.synthetic.main.item_food_menu.view.*
 import kotlinx.android.synthetic.main.layout_add_remove_item.view.*
 import java.lang.ref.WeakReference
-import java.util.*
 
 
 /*
@@ -22,13 +20,15 @@ import java.util.*
 * This same adapter class has been used in both "food menu" screen & "my cart" screen.
 * In My Cart screen - adapter needs FOOTER also..
 * */
-class FoodMenuListAdapter(private val context: Context,
-                          private val isCart: Boolean,
-                          private var foodMenuList: MutableList<FoodMenu> = mutableListOf(),
-                          private val clickListener: (Int) -> Unit):
+class FoodMenuListAdapter(
+    private val context: Context,
+    private val isCart: Boolean,
+    private var foodMenuList: MutableList<FoodMenu> = mutableListOf(),
+    private val clickListener: (Int) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var totalItemCount = 0
+    private var totalItemCount = 0
 
     // For Cart
     private val TYPE_HEADER = 0
@@ -46,24 +46,32 @@ class FoodMenuListAdapter(private val context: Context,
         notifyDataSetChanged()
     }
 
-    fun getUpdatedCart() = updatedCartItemMap
+    fun setTotalItemCount(count: Int) {
+        totalItemCount = count
+    }
+
+    fun getUpdatedCartMap() = updatedCartItemMap
     /*
     * viewType - what value getItemViewType method returns.
     * */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        println("log onCreateViewHolder")
-        return if (viewType == TYPE_FOOTER) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_show_more, parent, false)
-            ShowMoreViewHolder(view)
-        } else {
-            println("log type item")
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_food_menu, parent, false)
-            FoodMenuViewHolder(view,this)
+        return when (viewType) {
+            TYPE_FOOTER -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_show_more, parent, false)
+                ShowMoreViewHolder(view)
+            }
+            TYPE_ITEM -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_food_menu, parent, false)
+                FoodMenuViewHolder(view, this)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_empty_cart, parent, false)
+                EmptyCartViewHolder(view)
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        println("log onBindViewHolder")
         if (holder is FoodMenuViewHolder)
             holder.bind(foodMenuList, clickListener)
         else {
@@ -99,11 +107,13 @@ class FoodMenuListAdapter(private val context: Context,
         mWithFooter = value
     }
 
-    class ShowMoreViewHolder(containerView: View?): RecyclerView.ViewHolder(containerView!!)
+    class ShowMoreViewHolder(containerView: View?) : RecyclerView.ViewHolder(containerView!!)
+    class EmptyCartViewHolder(containerView: View?) : RecyclerView.ViewHolder(containerView!!)
 
-    class FoodMenuViewHolder(containerView: View?, adapter: FoodMenuListAdapter): RecyclerView.ViewHolder(containerView!!) {
-        private val mWeakAdapterInstance : WeakReference<FoodMenuListAdapter>
-        private val mAdapter : FoodMenuListAdapter?
+    class FoodMenuViewHolder(containerView: View?, adapter: FoodMenuListAdapter) :
+        RecyclerView.ViewHolder(containerView!!) {
+        private val mWeakAdapterInstance: WeakReference<FoodMenuListAdapter>
+        private val mAdapter: FoodMenuListAdapter?
 
         init {
             mWeakAdapterInstance = WeakReference<FoodMenuListAdapter>(adapter)
@@ -111,7 +121,6 @@ class FoodMenuListAdapter(private val context: Context,
         }
 
         fun bind(itemList: MutableList<FoodMenu>, clickListener: (Int) -> Unit) {
-            println("log food menu view holder")
             val item = itemList[adapterPosition]
             itemView.run {
 
@@ -163,7 +172,8 @@ class FoodMenuListAdapter(private val context: Context,
             view.run {
                 textviewMenuTitle.text = item.menuName
                 textviewMenuSubTitle.text = item.recipe
-                textviewPrice.text = mAdapter?.context?.resources?.getString(R.string.text_price, item.price) ?: ""
+                textviewPrice.text =
+                    mAdapter?.context?.resources?.getString(R.string.text_price, item.price) ?: ""
 
 
                 textviewFoodTypeN.text = item.typeN
@@ -176,11 +186,9 @@ class FoodMenuListAdapter(private val context: Context,
             if (isIncrement) {
                 ++(item.itemCount)
                 mAdapter?.let { ++(it.totalItemCount) }
-                mAdapter?.onItemCountChanged?.invoke(item.price)
             } else {
                 --(item.itemCount)
                 mAdapter?.let { --(it.totalItemCount) }
-                mAdapter?.onItemCountChanged?.invoke(0 - item.price)
             }
             // For Cart
             val isMyCart = mAdapter?.isCart ?: false
@@ -188,13 +196,15 @@ class FoodMenuListAdapter(private val context: Context,
                 mAdapter?.updatedCartItemMap?.put(item.menuId.toInt(), item.itemCount)
 
             // For Cart
-            if (isMyCart && item.itemCount == 0) {
+            if (isMyCart && itemList.size > 0 && item.itemCount == 0) {
                 itemList.removeAt(adapterPosition)
                 mAdapter?.notifyItemRemoved(adapterPosition)
             } else {
                 itemList[adapterPosition] = item
                 mAdapter?.notifyItemChanged(adapterPosition)
             }
+            mAdapter?.onItemCountChanged?.invoke(if (isIncrement) item.price else 0 - item.price)
+
         }
     }
 }

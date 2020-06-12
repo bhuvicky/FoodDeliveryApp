@@ -3,6 +3,8 @@ package com.example.doodbluetask.foodmenu
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.forEach
+import androidx.core.util.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bhuvanesh.appbase.getViewModel
 import com.bhuvanesh.appbase.gone
 import com.bhuvanesh.appbase.show
+import com.bhuvanesh.appbase.ui.BaseFragment
 import com.example.doodbluetask.*
 import com.example.doodbluetask.model.FoodMenu
 import com.example.doodbluetask.model.RestaurantAddress
@@ -18,7 +21,7 @@ import com.example.doodbluetask.model.SelectedFoodMenuList
 import kotlinx.android.synthetic.main.fragment_food_menu.*
 import kotlinx.android.synthetic.main.layout_restaurant_address.*
 
-class FoodMenuFragment : Fragment() {
+class FoodMenuFragment : BaseFragment() {
 
     private lateinit var mViewModel: FoodMenuViewModel
     private lateinit var foodMenuAdapter: FoodMenuListAdapter
@@ -54,7 +57,12 @@ class FoodMenuFragment : Fragment() {
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mViewModel.getAddress()
-        mViewModel.getFoodMenu()
+        if (foodMenuList.isEmpty()) {
+            mViewModel.getFoodMenu()
+        }
+
+        if (!mViewModel.getUpdatedCartMap().isEmpty())
+            setUpdatedFoodMenuList()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -96,6 +104,26 @@ class FoodMenuFragment : Fragment() {
         })
     }
 
+    // This method should call to reflect the changes happened in "My Cart" screen
+    private fun setUpdatedFoodMenuList() {
+        val map = mViewModel.getUpdatedCartMap()
+
+        // Update total Item Count
+        val itemCount = mViewModel.getTotalCartItemCount()
+        if (itemCount > 0)
+            showViewCart(itemCount)
+        foodMenuAdapter.setTotalItemCount(itemCount)
+
+        // Update food menu list
+        foodMenuList.forEachIndexed { index, item ->
+
+            if (!(map.indexOfKey(item.menuId.toInt()) < 0)) {
+                item.itemCount = map[item.menuId.toInt()]
+                (foodMenuList as ArrayList<FoodMenu>)[index] = item
+                foodMenuAdapter.notifyItemChanged(index)
+            }
+        }
+    }
 
     private fun handleRecyclerViewItemClick(totalItemCount: Int) {
         // TODO: New Learn; plurals
@@ -106,10 +134,8 @@ class FoodMenuFragment : Fragment() {
         * the second count parameter is inserted into the %d placeholder.
         * If your plural strings do not include string formatting, you don't need to pass the third parameter to getQuantityString.
         * */
-        if (totalItemCount > 0) {
-            layoutViewCart.show()
-            textViewCartCount.text = resources.getQuantityString(R.plurals.numberOfItemsInCart, totalItemCount, totalItemCount)
-        }
+        if (totalItemCount > 0)
+            showViewCart(totalItemCount)
         else
             layoutViewCart.gone()
     }
@@ -123,5 +149,10 @@ class FoodMenuFragment : Fragment() {
 
         textviewTiming.text = resources.getString(R.string.text_timing, address.availableTime)
         textviewContactNumber.text = resources.getString(R.string.text_contact_num, address.contactNumber)
+    }
+
+    private fun showViewCart(totalItemCount: Int) {
+        layoutViewCart.show()
+        textViewCartCount.text = resources.getQuantityString(R.plurals.numberOfItemsInCart, totalItemCount, totalItemCount)
     }
 }

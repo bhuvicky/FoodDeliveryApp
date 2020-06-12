@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textViewShowMore"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/recyclerviewCartList"
-    android:layout_alignParentEnd="true"
-    android:layout_marginEnd="@dimen/margin_8dp"
-    android:text="@string/text_show_more"
-    android:textColor="@color/colorDarkBlue" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textViewShowMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginEnd="@dimen/margin_8dp"
+        android:text="@string/text_show_more"
+        android:textColor="@color/colorDarkBlue" />
+</FrameLayout>

@@ -11,8 +11,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bhuvanesh.appbase.getViewModel
+import com.bhuvanesh.appbase.ui.BaseFragment
 import com.example.doodbluetask.AppConstants
 import com.example.doodbluetask.FoodDeliveryApplication
 import com.example.doodbluetask.R
@@ -22,12 +25,14 @@ import com.example.doodbluetask.model.FoodMenu
 import kotlinx.android.synthetic.main.fragment_food_menu.toolbar
 import kotlinx.android.synthetic.main.fragment_my_cart.*
 
-class MyCartFragment : Fragment() {
+class MyCartFragment : BaseFragment() {
 
     private lateinit var mViewModel: FoodMenuViewModel
     private lateinit var foodMenuAdapter: FoodMenuListAdapter
     private var foodMenuList: List<FoodMenu> = mutableListOf()
-    var totalCost = 0f
+
+    private var totalCost = 0f
+    private var isCartItemUpdated = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,12 +45,9 @@ class MyCartFragment : Fragment() {
         activity?.let {
             mViewModel =
                 (it as AppCompatActivity).getViewModel { FoodMenuViewModel(FoodDeliveryApplication.getAppContext()) }
-//            setObservers(it)
         }
 
-        foodMenuAdapter = FoodMenuListAdapter(requireContext(), true) { totalItemCount ->
-            //                handleRecyclerViewItemClick(totalItemCount)
-        }
+        foodMenuAdapter = FoodMenuListAdapter(requireContext(), true) { totalItemCount -> }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -62,10 +64,19 @@ class MyCartFragment : Fragment() {
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        val navController = requireActivity().findNavController(R.id.nav_host_fragment)
+//        (requireActivity() as AppCompatActivity).setupActionBarWithNavController(navController)
     }
 
     private fun initViews() {
+        mViewModel.getUpdatedCartMap().clear()
+        mViewModel.setTotalCartItemCount(0)
+
         updateTotalCost()
 
         with(recyclerviewCartList) {
@@ -83,8 +94,14 @@ class MyCartFragment : Fragment() {
 
     private fun setListeners() {
         foodMenuAdapter.onItemCountChanged = { itemPrice ->
+            isCartItemUpdated = true
             totalCost += itemPrice
             createSpannableString()
+
+            if (totalCost == 0f) {
+                foodMenuAdapter.setWithHeader(true)
+                foodMenuAdapter.notifyDataSetChanged()
+            }
         }
     }
 
@@ -127,5 +144,18 @@ class MyCartFragment : Fragment() {
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         buttonTotalCost.text = spannable
+    }
+
+    fun onBackPressed() {
+        if (!isCartItemUpdated)
+            return
+
+        if (!foodMenuList.isEmpty()) {
+            var totalCartItemCount = 0
+            foodMenuList.forEach { totalCartItemCount += it.itemCount }
+            mViewModel.setTotalCartItemCount(totalCartItemCount)
+        }
+
+        mViewModel.setUpdatedCartMap(foodMenuAdapter.getUpdatedCartMap())
     }
 }
