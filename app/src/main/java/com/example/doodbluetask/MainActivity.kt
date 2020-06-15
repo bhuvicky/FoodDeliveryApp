@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
     }
 
+    // https://medium.com/@nickskelton/linking-the-navigation-drawer-back-button-and-action-button-indicator-b90d148e7aab
     override fun onBackPressed() {
         /*if (sendBackPressToDrawer()) {
             return;

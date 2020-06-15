@@ -1,0 +1,13 @@
+What learned in this Project ?
+Recyclerview with "Show more" - impl using Header & footer;
+Resource - Github forked.
+
+All Explicit casting is down-casting, upcasting will done by compiler implicitly.
+
+Passing list of objects using "safe args" in navigation component
+
+String plurals; Spannable strings
+
+Generic method for get json data from assests.
+
+Co-ordinator layout

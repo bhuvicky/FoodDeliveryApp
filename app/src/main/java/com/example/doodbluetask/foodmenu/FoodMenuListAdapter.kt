@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bhuvanesh.appbase.gone
 import com.bhuvanesh.appbase.show
+import com.example.doodbluetask.AppConstants
 import com.example.doodbluetask.R
 import com.example.doodbluetask.model.FoodMenu
 import kotlinx.android.synthetic.main.item_food_menu.view.*
@@ -135,7 +136,7 @@ class FoodMenuListAdapter(
                 setData(item, this)
 
                 textViewIncrement.setOnClickListener {
-                    if (item.itemCount < 20)
+                    if (item.itemCount < AppConstants.MAX_ITEM_COUNT)
                         updateItem(itemList, true)
                     else {
                         textViewIncrement.isEnabled = false

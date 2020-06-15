@@ -147,14 +147,14 @@ class MyCartFragment : BaseFragment() {
     }
 
     fun onBackPressed() {
-        if (!isCartItemUpdated)
-            return
-
         if (!foodMenuList.isEmpty()) {
             var totalCartItemCount = 0
             foodMenuList.forEach { totalCartItemCount += it.itemCount }
             mViewModel.setTotalCartItemCount(totalCartItemCount)
         }
+
+        if (!isCartItemUpdated)
+            return
 
         mViewModel.setUpdatedCartMap(foodMenuAdapter.getUpdatedCartMap())
     }

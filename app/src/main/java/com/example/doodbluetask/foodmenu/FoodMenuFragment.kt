@@ -61,6 +61,7 @@ class FoodMenuFragment : BaseFragment() {
             mViewModel.getFoodMenu()
         }
 
+        setTotalItemCount()
         if (!mViewModel.getUpdatedCartMap().isEmpty())
             setUpdatedFoodMenuList()
     }
@@ -104,15 +105,18 @@ class FoodMenuFragment : BaseFragment() {
         })
     }
 
-    // This method should call to reflect the changes happened in "My Cart" screen
-    private fun setUpdatedFoodMenuList() {
-        val map = mViewModel.getUpdatedCartMap()
-
+    private fun setTotalItemCount() {
         // Update total Item Count
         val itemCount = mViewModel.getTotalCartItemCount()
+        println("log totalCartItemCount3 = ${mViewModel.getTotalCartItemCount()}")
         if (itemCount > 0)
             showViewCart(itemCount)
         foodMenuAdapter.setTotalItemCount(itemCount)
+    }
+
+    // This method should call to reflect the changes happened in "My Cart" screen
+    private fun setUpdatedFoodMenuList() {
+        val map = mViewModel.getUpdatedCartMap()
 
         // Update food menu list
         foodMenuList.forEachIndexed { index, item ->
